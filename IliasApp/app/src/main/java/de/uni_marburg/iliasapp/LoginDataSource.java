@@ -1,6 +1,5 @@
-package de.uni_marburg.iliasapp.data;
+package de.uni_marburg.iliasapp;
 
-import de.uni_marburg.iliasapp.data.model.LoggedInUser;
 
 import java.io.IOException;
 

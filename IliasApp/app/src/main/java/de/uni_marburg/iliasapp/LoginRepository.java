@@ -1,6 +1,4 @@
-package de.uni_marburg.iliasapp.data;
-
-import de.uni_marburg.iliasapp.data.model.LoggedInUser;
+package de.uni_marburg.iliasapp;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -17,12 +15,12 @@ public class LoginRepository {
     private LoggedInUser user = null;
 
     // private constructor : singleton access
-    private LoginRepository(LoginDataSource dataSource) {
+    LoginRepository(LoginDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     public static LoginRepository getInstance(LoginDataSource dataSource) {
-        if(instance == null){
+        if (instance == null) {
             instance = new LoginRepository(dataSource);
         }
         return instance;
