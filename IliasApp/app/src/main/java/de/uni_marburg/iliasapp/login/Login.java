@@ -1,8 +1,8 @@
-package de.uni_marburg.iliasapp;
+package de.uni_marburg.iliasapp.login;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import de.uni_marburg.iliasapp.MainActivity;
+import de.uni_marburg.iliasapp.R;
 import de.uni_marburg.iliasapp.databinding.ActivityLoginBinding;
 
 public class Login extends AppCompatActivity {
@@ -17,6 +19,7 @@ public class Login extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private LoggedInUser user;
     private LoginRepository loginRepository;
+    ProgressBar loadingProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +33,14 @@ public class Login extends AppCompatActivity {
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
-        final ProgressBar loadingProgressBar = binding.loading;
+        loadingProgressBar = binding.loading;
+
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("hello");
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
@@ -46,22 +51,33 @@ public class Login extends AppCompatActivity {
 
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
+        LoginResult result = loginRepository.login(username, password);
 
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+        if (result instanceof LoginResult.Success) {
+            System.out.println("hello1");
+            LoggedInUser data = ((LoginResult.Success<LoggedInUser>) result).getData();
+
             this.user = data;
+            System.out.println(user.getDisplayName());
+            updateUiWithUser(user);
+            finish();
+        }  else {
+            loadingProgressBar.setVisibility(View.GONE);
+            showLoginFailed(((LoginResult.Error) result).getError().getMessage());
         }
     }
 
     private void updateUiWithUser(LoggedInUser user) {
-        String welcome = getString(R.string.welcome) + user.getDisplayName();
-        //  TODO : initiate successful logged in experience
+        String welcome = getString(R.string.welcome) + " " + user.getDisplayName();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        Intent moveToHome = new Intent(this, MainActivity.class);
+        startActivity(moveToHome);
+
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    private void showLoginFailed(String message) {
+        Toast.makeText(getApplicationContext(),message , Toast.LENGTH_SHORT).show();
+
     }
 
 }

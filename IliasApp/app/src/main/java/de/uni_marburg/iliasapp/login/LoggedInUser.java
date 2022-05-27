@@ -1,4 +1,4 @@
-package de.uni_marburg.iliasapp;
+package de.uni_marburg.iliasapp.login;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
