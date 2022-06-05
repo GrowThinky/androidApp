@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_main);
 
 
+
         // data to populate the RecyclerView with
         ArrayList<String> results = new ArrayList<>();
 

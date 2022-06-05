@@ -1,6 +1,6 @@
 package de.uni_marburg.iliasapp;
 
-public class Modul {
+public class    Modul {
 
  final public  String id;
  public String name;
